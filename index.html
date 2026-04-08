@@ -22,26 +22,51 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
             overflow: hidden;
+            padding: 1rem;
         }
 
-        .container {
-            animation: fadeIn 2s ease-in-out forwards;
+        /* Phone frame container */
+        .phone {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 9 / 16;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            background: linear-gradient(135deg, #1c1f3c 0%, #2f3468 100%);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            animation: fadeIn 1.5s ease-in-out forwards;
             opacity: 0;
         }
 
-        h1, h2 {
+        .phone .welcome {
+            font-size: 1.1rem;
+            text-align: center;
             margin-bottom: 1rem;
         }
 
-        #clock {
-            font-size: 5rem;
+        .phone #clock {
+            font-size: 3rem;
+            text-align: center;
             letter-spacing: 0.1em;
-            margin: 2rem 0;
+            margin: 1rem 0;
             color: #00e0ff;
             text-shadow: 0 0 10px #00e0ff, 0 0 20px #00e0ff, 0 0 30px #0066ff;
         }
+
+        .phone .info {
+            font-size: 0.75rem;
+            text-align: center;
+            color: #bbbbdd;
+            margin-top: 1rem;
+            line-height: 1.3;
+        }
+
+        /* Removed old #clock styles; now defined within .phone */
 
         /* Keyframes for fade-in animation */
         @keyframes fadeIn {
@@ -57,10 +82,14 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Projemizin web sitesine hoş geldiniz</h1>
+    <!-- Phone-shaped container for mobile friendly design -->
+    <div class="phone">
+        <div class="welcome">Projemizin web sitesine hoş geldiniz</div>
         <div id="clock">00:00:00</div>
-        <h2>Projemiz çok yakında sizlerle</h2>
+        <div class="info">
+            Furkan Yıldız<br/>
+            We are developing a mobile application that will use artificial intelligence to summarize your phone notifications. Stay tuned!
+        </div>
     </div>
 
     <script>
