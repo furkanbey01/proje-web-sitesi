@@ -33,29 +33,29 @@
             width: 100%;
             max-width: 420px;
             aspect-ratio: 9 / 16;
-            /* Refined border and radius for a sleek glass card */
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            /* Border and radius for a refined frosted-glass card */
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 1.5rem;
-            /* Frosted glass background with slight tint */
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px) saturate(180%);
-            -webkit-backdrop-filter: blur(10px) saturate(180%);
-            /* Subtle shadow to lift the card without overpowering */
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            /* Frosted glass background with slightly higher opacity for a pronounced effect */
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            /* Softer shadow to enhance the floating appearance */
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             padding: 1.5rem;
-            animation: slideDown 1s ease-out forwards;
+            animation: slideDown 1.2s ease-out forwards;
             opacity: 0;
         }
 
         .phone .welcome {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             font-weight: 600;
             text-align: center;
             margin-bottom: 1rem;
-            color: #e5e5e5;
+            color: #f5f5f5;
         }
 
         .phone #clock {
@@ -63,16 +63,17 @@
             text-align: center;
             letter-spacing: 0.1em;
             margin: 1rem 0;
-            color: #6ec6ff; /* gentle neon blue */
-            text-shadow: 0 0 8px #6ec6ff, 0 0 16px #6ec6ff, 0 0 24px #4d8cff;
+            /* Soft cool blue reminiscent of Apple’s accent colors */
+            color: #82c8ff;
+            text-shadow: 0 0 8px #82c8ff, 0 0 16px #82c8ff, 0 0 32px #3c76be;
         }
 
         .phone .info {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-align: center;
-            color: rgba(240, 240, 240, 0.85);
+            color: rgba(240, 240, 240, 0.9);
             margin-top: 1rem;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         /* Removed old #clock styles; now defined within .phone */
@@ -94,10 +95,10 @@
     <!-- Phone-shaped container for mobile friendly design -->
     <div class="phone">
         <!-- Updated welcome message to a friendly English phrase conveying our mission -->
-        <div class="welcome">Working to make your life easier</div>
+        <div class="welcome">We're working to make your life easier</div>
         <div id="clock">00:00:00</div>
         <div class="info">
-            We’re developing an AI‑Powered Event Analytics & Notification Platform that will analyze real‑time events and intelligently manage your notifications.
+            Üzerinde çalıştığımız "Yapay Zeka Destekli Gerçek Zamanlı Olay Analizi ve Akıllı Bildirim Yönetim Platformu" (AI‑Powered Event Analytics & Notification Platform).
         </div>
     </div>
 
