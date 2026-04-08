@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Proje Web Sitesi</title>
-    <!-- Google Fonts for a futuristic digital look -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Import a clean, modern font reminiscent of Apple's minimal style -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         /* Reset default margin and padding */
         * {
@@ -15,11 +15,12 @@
         }
 
         body {
-            font-family: 'Orbitron', sans-serif;
+            /* Use Inter for a sleek, neutral typographic base */
+            font-family: 'Inter', sans-serif;
             height: 100vh;
-            /* Dark gradient reminiscent of modern glassy designs */
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #f5f6fa;
+            /* Deep blue gradient for a sophisticated, modern backdrop */
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: #f0f0f0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -32,28 +33,29 @@
             width: 100%;
             max-width: 420px;
             aspect-ratio: 9 / 16;
-            /* Subtle border for glass effect */
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 2rem;
-            /* Frosted glass background */
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            /* Soft shadow to lift the card from background */
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+            /* Refined border and radius for a sleek glass card */
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 1.5rem;
+            /* Frosted glass background with slight tint */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px) saturate(180%);
+            -webkit-backdrop-filter: blur(10px) saturate(180%);
+            /* Subtle shadow to lift the card without overpowering */
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             padding: 1.5rem;
-            animation: slideDown 1.5s ease-out forwards;
+            animation: slideDown 1s ease-out forwards;
             opacity: 0;
         }
 
         .phone .welcome {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
+            font-weight: 600;
             text-align: center;
             margin-bottom: 1rem;
-            color: #ffffff;
+            color: #e5e5e5;
         }
 
         .phone #clock {
@@ -61,14 +63,14 @@
             text-align: center;
             letter-spacing: 0.1em;
             margin: 1rem 0;
-            color: #80dfff; /* soft neon blue */
-            text-shadow: 0 0 10px #80dfff, 0 0 20px #80dfff, 0 0 30px #4d8cff;
+            color: #6ec6ff; /* gentle neon blue */
+            text-shadow: 0 0 8px #6ec6ff, 0 0 16px #6ec6ff, 0 0 24px #4d8cff;
         }
 
         .phone .info {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-align: center;
-            color: #d6d6f0;
+            color: rgba(240, 240, 240, 0.85);
             margin-top: 1rem;
             line-height: 1.4;
         }
@@ -92,10 +94,10 @@
     <!-- Phone-shaped container for mobile friendly design -->
     <div class="phone">
         <!-- Updated welcome message to a friendly English phrase conveying our mission -->
-        <div class="welcome">We're working to make your life easier</div>
+        <div class="welcome">Working to make your life easier</div>
         <div id="clock">00:00:00</div>
         <div class="info">
-            We are preparing an application that will make your life easier. Stay tuned!
+            We’re developing an AI‑Powered Event Analytics & Notification Platform that will analyze real‑time events and intelligently manage your notifications.
         </div>
     </div>
 
