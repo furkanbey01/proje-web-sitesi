@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proje Web Sitesi</title>
+    <!-- Google Fonts for a futuristic digital look -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset default margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            height: 100vh;
+            background: linear-gradient(135deg, #0d0f21 0%, #1c1f3c 50%, #2f3468 100%);
+            color: #f5f6fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .container {
+            animation: fadeIn 2s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        h1, h2 {
+            margin-bottom: 1rem;
+        }
+
+        #clock {
+            font-size: 5rem;
+            letter-spacing: 0.1em;
+            margin: 2rem 0;
+            color: #00e0ff;
+            text-shadow: 0 0 10px #00e0ff, 0 0 20px #00e0ff, 0 0 30px #0066ff;
+        }
+
+        /* Keyframes for fade-in animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Projemizin web sitesine hoş geldiniz</h1>
+        <div id="clock">00:00:00</div>
+        <h2>Projemiz çok yakında sizlerle</h2>
+    </div>
+
+    <script>
+        function updateClock() {
+            const clockElement = document.getElementById('clock');
+            const now = new Date();
+            // format hours, minutes, seconds with leading zeros
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        // initial call to display time immediately
+        updateClock();
+        // update every second
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
