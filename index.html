@@ -3,119 +3,330 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Proje Web Sitesi</title>
-    <!-- Import a clean, modern font reminiscent of Apple's minimal style -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>FurkanBot Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Reset default margin and padding */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0b1220;
+            --bg2: #111c31;
+            --card: rgba(255,255,255,0.08);
+            --text: #edf2ff;
+            --muted: #b5bfd7;
+            --success: #43d89a;
+            --danger: #ff7a86;
+            --accent: #7cc4ff;
+            --border: rgba(255,255,255,0.18);
         }
 
         body {
-            /* Use Inter for a sleek, neutral typographic base */
             font-family: 'Inter', sans-serif;
-            height: 100vh;
-            /* Deep blue gradient for a sophisticated, modern backdrop */
-            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-            color: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            min-height: 100vh;
+            color: var(--text);
+            background: radial-gradient(circle at 20% 20%, #1e3359, var(--bg) 42%),
+                        linear-gradient(135deg, var(--bg), var(--bg2));
             padding: 1rem;
         }
 
-        /* Phone frame container */
-        .phone {
+        .app-shell {
+            max-width: 1050px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .auth-wrap {
+            min-height: calc(100vh - 2rem);
+            display: grid;
+            place-items: center;
+        }
+
+        .auth-card {
             width: 100%;
-            max-width: 420px;
-            aspect-ratio: 9 / 16;
-            /* Border and radius for a refined frosted-glass card */
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1.5rem;
-            /* Frosted glass background with slightly higher opacity for a pronounced effect */
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            /* Softer shadow to enhance the floating appearance */
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            max-width: 440px;
             padding: 1.5rem;
-            animation: slideDown 1.2s ease-out forwards;
-            opacity: 0;
+            display: grid;
+            gap: 1rem;
         }
 
-        .phone .welcome {
-            font-size: 1.3rem;
+        .auth-card h1 { font-size: 1.35rem; }
+        .auth-card p { color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
+
+        .input-row { display: grid; gap: 0.45rem; }
+        label { font-size: 0.9rem; color: var(--muted); }
+        input {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.8rem 0.9rem;
+            background: rgba(0,0,0,0.2);
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
             font-weight: 600;
-            text-align: center;
-            margin-bottom: 1rem;
-            color: #f5f5f5;
+            cursor: pointer;
         }
 
-        .phone #clock {
-            font-size: 3rem;
-            text-align: center;
-            letter-spacing: 0.1em;
-            margin: 1rem 0;
-            /* Soft cool blue reminiscent of Apple’s accent colors */
-            color: #82c8ff;
-            text-shadow: 0 0 8px #82c8ff, 0 0 16px #82c8ff, 0 0 32px #3c76be;
+        .btn-primary { background: var(--accent); color: #00152a; }
+        .btn-secondary { background: rgba(255,255,255,0.14); color: var(--text); }
+
+        .error {
+            color: var(--danger);
+            font-size: 0.88rem;
+            min-height: 1.25rem;
         }
 
-        .phone .info {
-            font-size: 0.75rem;
-            text-align: center;
-            color: rgba(240, 240, 240, 0.9);
-            margin-top: 1rem;
-            line-height: 1.5;
+        .hidden { display: none !important; }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
         }
 
-        /* Removed old #clock styles; now defined within .phone */
+        .title { font-size: 1.1rem; font-weight: 700; }
+        .subtitle { color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
 
-        /* Keyframes for slide-down animation */
-        @keyframes slideDown {
-            0% {
-                transform: translateY(-30px);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric { padding: 1rem; }
+        .metric .label { color: var(--muted); font-size: 0.84rem; }
+        .metric .value { font-size: 1.35rem; font-weight: 700; margin-top: 0.35rem; }
+
+        .good { color: var(--success); }
+        .bad { color: var(--danger); }
+
+        .panel { padding: 1rem; }
+        .panel h2 { font-size: 1rem; margin-bottom: 0.75rem; }
+
+        .log-list {
+            display: grid;
+            gap: 0.45rem;
+            max-height: 220px;
+            overflow: auto;
+            padding-right: 0.25rem;
+        }
+
+        .log-item {
+            padding: 0.6rem 0.75rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            background: rgba(0,0,0,0.18);
+            font-size: 0.87rem;
+            color: #dce6ff;
+        }
+
+        .inline-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
         }
     </style>
 </head>
 <body>
-    <!-- Phone-shaped container for mobile friendly design -->
-    <div class="phone">
-        <!-- Updated welcome message to a friendly English phrase conveying our mission -->
-        <div class="welcome">We're working to make your life easier</div>
-        <div id="clock">00:00:00</div>
-        <div class="info">
-            Üzerinde çalıştığımız "Yapay Zeka Destekli Gerçek Zamanlı Olay Analizi ve Akıllı Bildirim Yönetim Platformu" (AI‑Powered Event Analytics & Notification Platform).
+    <main id="authArea" class="auth-wrap">
+        <section class="auth-card card">
+            <h1>FurkanBot Web Uygulaması</h1>
+            <p>
+                Sisteme giriş yaparak bot panelini kullanabilirsiniz.
+                (Not: Bu, istemci tarafı demo doğrulamasıdır.)
+            </p>
+
+            <form id="loginForm">
+                <div class="input-row">
+                    <label for="passwordInput">Şifre</label>
+                    <input id="passwordInput" type="password" autocomplete="off" required />
+                </div>
+                <div id="errorMessage" class="error"></div>
+                <button class="btn-primary" type="submit">Giriş Yap</button>
+            </form>
+        </section>
+    </main>
+
+    <section id="appArea" class="app-shell hidden">
+        <header class="topbar card">
+            <div>
+                <div class="title">FurkanBot Kontrol Paneli</div>
+                <div class="subtitle">Strategy + Risk + Trade Simülasyonu</div>
+            </div>
+            <button id="logoutBtn" class="btn-secondary">Çıkış Yap</button>
+        </header>
+
+        <div class="grid">
+            <article class="metric card">
+                <div class="label">Bot Durumu</div>
+                <div id="botStatus" class="value good">AKTİF</div>
+            </article>
+            <article class="metric card">
+                <div class="label">Açık Pozisyon</div>
+                <div id="openTrades" class="value">0</div>
+            </article>
+            <article class="metric card">
+                <div class="label">Günlük PnL</div>
+                <div id="dailyPnl" class="value good">+0.00%</div>
+            </article>
+            <article class="metric card">
+                <div class="label">Sunucu Saati (UTC)</div>
+                <div id="clock" class="value">00:00:00</div>
+            </article>
         </div>
-    </div>
+
+        <section class="panel card">
+            <h2>Otomatik Sinyal Akışı</h2>
+            <div id="logList" class="log-list"></div>
+            <div class="inline-actions">
+                <button id="pauseBtn" class="btn-secondary" type="button">Botu Durdur</button>
+                <button id="signalBtn" class="btn-primary" type="button">Manuel Sinyal Üret</button>
+            </div>
+        </section>
+    </section>
 
     <script>
-        function updateClock() {
-            const clockElement = document.getElementById('clock');
-            const now = new Date();
-            // format hours, minutes, seconds with leading zeros
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+        const APP_PASSWORD = 'asd1234';
+        const AUTH_KEY = 'furkanbot-auth';
+
+        const authArea = document.getElementById('authArea');
+        const appArea = document.getElementById('appArea');
+        const loginForm = document.getElementById('loginForm');
+        const passwordInput = document.getElementById('passwordInput');
+        const errorMessage = document.getElementById('errorMessage');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const clockEl = document.getElementById('clock');
+        const botStatus = document.getElementById('botStatus');
+        const openTradesEl = document.getElementById('openTrades');
+        const dailyPnlEl = document.getElementById('dailyPnl');
+        const logList = document.getElementById('logList');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const signalBtn = document.getElementById('signalBtn');
+
+        let botRunning = true;
+        let openTrades = 0;
+        let dailyPnl = 0;
+
+        function isAuthenticated() {
+            return sessionStorage.getItem(AUTH_KEY) === 'true';
         }
-        // initial call to display time immediately
-        updateClock();
-        // update every second
-        setInterval(updateClock, 1000);
+
+        function setAuthenticated(value) {
+            sessionStorage.setItem(AUTH_KEY, value ? 'true' : 'false');
+        }
+
+        function renderAuthState() {
+            const allowed = isAuthenticated();
+            authArea.classList.toggle('hidden', allowed);
+            appArea.classList.toggle('hidden', !allowed);
+            if (allowed) {
+                startRealtimeWidgets();
+            }
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getUTCHours()).padStart(2, '0');
+            const m = String(now.getUTCMinutes()).padStart(2, '0');
+            const s = String(now.getUTCSeconds()).padStart(2, '0');
+            clockEl.textContent = `${h}:${m}:${s}`;
+        }
+
+        function addLog(message) {
+            const item = document.createElement('div');
+            item.className = 'log-item';
+            item.textContent = `[${new Date().toLocaleTimeString('tr-TR')}] ${message}`;
+            logList.prepend(item);
+            if (logList.childElementCount > 20) {
+                logList.removeChild(logList.lastElementChild);
+            }
+        }
+
+        function generateSignal() {
+            if (!botRunning) {
+                addLog('Bot kapalı olduğu için sinyal işlenmedi.');
+                return;
+            }
+            const events = [
+                { text: 'BTC/USDT için long sinyali alındı.', pnl: 0.45, tradeDelta: 1 },
+                { text: 'ETH/USDT pozisyonunda ROI hedefi gerçekleşti.', pnl: 0.62, tradeDelta: -1 },
+                { text: 'SOL/USDT işlemi stoploss ile kapandı.', pnl: -0.38, tradeDelta: -1 },
+                { text: 'XRP/USDT için giriş filtreden geçti.', pnl: 0.21, tradeDelta: 1 }
+            ];
+
+            const event = events[Math.floor(Math.random() * events.length)];
+            openTrades = Math.max(0, openTrades + event.tradeDelta);
+            dailyPnl = Number((dailyPnl + event.pnl).toFixed(2));
+
+            openTradesEl.textContent = String(openTrades);
+            dailyPnlEl.textContent = `${dailyPnl >= 0 ? '+' : ''}${dailyPnl.toFixed(2)}%`;
+            dailyPnlEl.classList.toggle('good', dailyPnl >= 0);
+            dailyPnlEl.classList.toggle('bad', dailyPnl < 0);
+            addLog(event.text);
+        }
+
+        function startRealtimeWidgets() {
+            if (window.__furkanbotStarted) return;
+            window.__furkanbotStarted = true;
+            updateClock();
+            setInterval(updateClock, 1000);
+            setInterval(() => {
+                if (botRunning) generateSignal();
+            }, 8000);
+            addLog('Panel başlatıldı. Bot veri toplamaya başladı.');
+        }
+
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (passwordInput.value === APP_PASSWORD) {
+                setAuthenticated(true);
+                passwordInput.value = '';
+                errorMessage.textContent = '';
+                renderAuthState();
+                addLog('Kimlik doğrulama başarılı.');
+            } else {
+                errorMessage.textContent = 'Şifre hatalı. Lütfen tekrar deneyin.';
+            }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            setAuthenticated(false);
+            authArea.classList.remove('hidden');
+            appArea.classList.add('hidden');
+            errorMessage.textContent = '';
+            addLog('Oturum kapatıldı.');
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            botRunning = !botRunning;
+            botStatus.textContent = botRunning ? 'AKTİF' : 'DURAKLATILDI';
+            botStatus.classList.toggle('good', botRunning);
+            botStatus.classList.toggle('bad', !botRunning);
+            pauseBtn.textContent = botRunning ? 'Botu Durdur' : 'Botu Başlat';
+            addLog(botRunning ? 'Bot tekrar başlatıldı.' : 'Bot durduruldu.');
+        });
+
+        signalBtn.addEventListener('click', generateSignal);
+
+        renderAuthState();
     </script>
 </body>
 </html>
