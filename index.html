@@ -1,332 +1,386 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FurkanBot Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Furkan Trade Console v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0a0f1f;
+      --bg-soft:#121933;
+      --card:#161f3f;
+      --card-2:#1b2850;
+      --line:#2a3768;
+      --text:#eef3ff;
+      --muted:#a8b4d8;
+      --ok:#22c58b;
+      --warn:#ff9f43;
+      --bad:#ff5e7d;
+      --brand:#5fb2ff;
+    }
 
-        :root {
-            --bg: #0b1220;
-            --bg2: #111c31;
-            --card: rgba(255,255,255,0.08);
-            --text: #edf2ff;
-            --muted: #b5bfd7;
-            --success: #43d89a;
-            --danger: #ff7a86;
-            --accent: #7cc4ff;
-            --border: rgba(255,255,255,0.18);
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background: radial-gradient(circle at 20% 10%, #1a2b57 0%, var(--bg) 38%), linear-gradient(150deg, #070b16, #111837);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 16px;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            color: var(--text);
-            background: radial-gradient(circle at 20% 20%, #1e3359, var(--bg) 42%),
-                        linear-gradient(135deg, var(--bg), var(--bg2));
-            padding: 1rem;
-        }
+    .hidden { display: none !important; }
 
-        .app-shell {
-            max-width: 1050px;
-            margin: 0 auto;
-            display: grid;
-            gap: 1rem;
-        }
+    .auth-screen {
+      min-height: calc(100vh - 32px);
+      display: grid;
+      place-items: center;
+    }
 
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-        }
+    .auth-card {
+      width: min(470px, 100%);
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, var(--card), #131b36);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 12px 45px rgba(0,0,0,.35);
+    }
 
-        .auth-wrap {
-            min-height: calc(100vh - 2rem);
-            display: grid;
-            place-items: center;
-        }
+    .badge {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      background: rgba(95,178,255,.12);
+      color: var(--brand);
+      border: 1px solid rgba(95,178,255,.35);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 10px;
+      margin-bottom: 14px;
+    }
 
-        .auth-card {
-            width: 100%;
-            max-width: 440px;
-            padding: 1.5rem;
-            display: grid;
-            gap: 1rem;
-        }
+    h1 { font-size: 1.45rem; margin-bottom: 8px; }
+    .sub { color: var(--muted); line-height: 1.55; margin-bottom: 18px; }
 
-        .auth-card h1 { font-size: 1.35rem; }
-        .auth-card p { color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
+    .field { margin-bottom: 12px; }
+    label { font-size: .9rem; color: var(--muted); display:block; margin-bottom: 6px; }
+    input {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #0c1430;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 16px;
+    }
 
-        .input-row { display: grid; gap: 0.45rem; }
-        label { font-size: 0.9rem; color: var(--muted); }
-        input {
-            width: 100%;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 0.8rem 0.9rem;
-            background: rgba(0,0,0,0.2);
-            color: var(--text);
-            font-size: 1rem;
-        }
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      cursor: pointer;
+      padding: 11px 14px;
+      font-weight: 700;
+    }
 
-        button {
-            border: none;
-            border-radius: 10px;
-            padding: 0.8rem 1rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
+    .btn-primary { background: linear-gradient(120deg, #4da8ff, #7dc4ff); color: #001632; }
+    .btn-soft { background: rgba(255,255,255,.08); color: var(--text); border: 1px solid var(--line); }
 
-        .btn-primary { background: var(--accent); color: #00152a; }
-        .btn-secondary { background: rgba(255,255,255,0.14); color: var(--text); }
+    .error { color: var(--bad); min-height: 20px; font-size: .88rem; margin-bottom: 6px; }
 
-        .error {
-            color: var(--danger);
-            font-size: 0.88rem;
-            min-height: 1.25rem;
-        }
+    .app {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
 
-        .hidden { display: none !important; }
+    .topbar {
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, #121b39, #101733);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem;
-        }
+    .title { font-size: 1.1rem; font-weight: 800; }
+    .meta { color: var(--muted); font-size: .86rem; margin-top: 2px; }
 
-        .title { font-size: 1.1rem; font-weight: 700; }
-        .subtitle { color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 1rem;
-        }
+    .panel {
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, var(--card), var(--card-2));
+      border-radius: 16px;
+      padding: 14px;
+    }
 
-        .metric { padding: 1rem; }
-        .metric .label { color: var(--muted); font-size: 0.84rem; }
-        .metric .value { font-size: 1.35rem; font-weight: 700; margin-top: 0.35rem; }
+    .metric-label { color: var(--muted); font-size: .84rem; }
+    .metric-value { margin-top: 6px; font-size: 1.45rem; font-weight: 800; }
 
-        .good { color: var(--success); }
-        .bad { color: var(--danger); }
+    .ok { color: var(--ok); }
+    .bad { color: var(--bad); }
+    .warn { color: var(--warn); }
 
-        .panel { padding: 1rem; }
-        .panel h2 { font-size: 1rem; margin-bottom: 0.75rem; }
+    .row {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 12px;
+    }
 
-        .log-list {
-            display: grid;
-            gap: 0.45rem;
-            max-height: 220px;
-            overflow: auto;
-            padding-right: 0.25rem;
-        }
+    .logs {
+      max-height: 290px;
+      overflow: auto;
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
 
-        .log-item {
-            padding: 0.6rem 0.75rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            background: rgba(0,0,0,0.18);
-            font-size: 0.87rem;
-            color: #dce6ff;
-        }
+    .log {
+      font-size: .88rem;
+      border: 1px solid #2a376755;
+      background: #0e173533;
+      border-radius: 10px;
+      padding: 9px 10px;
+      color: #dce7ff;
+    }
 
-        .inline-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-top: 0.75rem;
-        }
-    </style>
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+    .settings { display: grid; gap: 9px; margin-top: 10px; }
+    .inline { display:flex; justify-content: space-between; align-items:center; gap:8px; }
+    .tiny { color: var(--muted); font-size: .8rem; }
+
+    @media (max-width: 880px) {
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <main id="authArea" class="auth-wrap">
-        <section class="auth-card card">
-            <h1>FurkanBot Web Uygulaması</h1>
-            <p>
-                Sisteme giriş yaparak bot panelini kullanabilirsiniz.
-                (Not: Bu, istemci tarafı demo doğrulamasıdır.)
-            </p>
-
-            <form id="loginForm">
-                <div class="input-row">
-                    <label for="passwordInput">Şifre</label>
-                    <input id="passwordInput" type="password" autocomplete="off" required />
-                </div>
-                <div id="errorMessage" class="error"></div>
-                <button class="btn-primary" type="submit">Giriş Yap</button>
-            </form>
-        </section>
-    </main>
-
-    <section id="appArea" class="app-shell hidden">
-        <header class="topbar card">
-            <div>
-                <div class="title">FurkanBot Kontrol Paneli</div>
-                <div class="subtitle">Strategy + Risk + Trade Simülasyonu</div>
-            </div>
-            <button id="logoutBtn" class="btn-secondary">Çıkış Yap</button>
-        </header>
-
-        <div class="grid">
-            <article class="metric card">
-                <div class="label">Bot Durumu</div>
-                <div id="botStatus" class="value good">AKTİF</div>
-            </article>
-            <article class="metric card">
-                <div class="label">Açık Pozisyon</div>
-                <div id="openTrades" class="value">0</div>
-            </article>
-            <article class="metric card">
-                <div class="label">Günlük PnL</div>
-                <div id="dailyPnl" class="value good">+0.00%</div>
-            </article>
-            <article class="metric card">
-                <div class="label">Sunucu Saati (UTC)</div>
-                <div id="clock" class="value">00:00:00</div>
-            </article>
+  <section id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="badge">🔐 Protected Access</div>
+      <h1>Furkan Trade Console v2</h1>
+      <p class="sub">Bu panel şifre korumalıdır. Giriş yapmadan uygulama açılmaz. Demo şifre sadece test amaçlıdır.</p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="pass">Şifre</label>
+          <input id="pass" type="password" placeholder="Şifreyi girin" required>
         </div>
+        <div id="authError" class="error"></div>
+        <button class="btn btn-primary" type="submit">Uygulamayı Aç</button>
+      </form>
+      <p class="tiny" style="margin-top:10px;">Sürüm: build-2026-04-12-v2</p>
+    </div>
+  </section>
 
-        <section class="panel card">
-            <h2>Otomatik Sinyal Akışı</h2>
-            <div id="logList" class="log-list"></div>
-            <div class="inline-actions">
-                <button id="pauseBtn" class="btn-secondary" type="button">Botu Durdur</button>
-                <button id="signalBtn" class="btn-primary" type="button">Manuel Sinyal Üret</button>
-            </div>
-        </section>
+  <main id="appScreen" class="app hidden">
+    <header class="topbar">
+      <div>
+        <div class="title">FurkanBot Dashboard</div>
+        <div class="meta">Freqtrade mantığından esinli: sinyal > risk > emir > log akışı</div>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button id="lockBtn" class="btn btn-soft">Kilitle</button>
+      </div>
+    </header>
+
+    <section class="grid">
+      <article class="panel">
+        <div class="metric-label">Bot Durumu</div>
+        <div id="statusValue" class="metric-value ok">AKTİF</div>
+      </article>
+      <article class="panel">
+        <div class="metric-label">Açık Pozisyon</div>
+        <div id="positionsValue" class="metric-value">0</div>
+      </article>
+      <article class="panel">
+        <div class="metric-label">Günlük PnL</div>
+        <div id="pnlValue" class="metric-value ok">+0.00%</div>
+      </article>
+      <article class="panel">
+        <div class="metric-label">UTC Saat</div>
+        <div id="timeValue" class="metric-value">00:00:00</div>
+      </article>
     </section>
 
-    <script>
-        const APP_PASSWORD = 'asd1234';
-        const AUTH_KEY = 'furkanbot-auth';
+    <section class="row">
+      <article class="panel">
+        <h2 style="font-size:1rem;">Canlı Olay Akışı</h2>
+        <div id="logs" class="logs"></div>
+        <div class="controls">
+          <button id="toggleBtn" class="btn btn-soft">Botu Durdur</button>
+          <button id="signalBtn" class="btn btn-primary">Manuel Sinyal</button>
+          <button id="riskBtn" class="btn btn-soft">Risk Kontrolü</button>
+          <button id="clearBtn" class="btn btn-soft">Log Temizle</button>
+        </div>
+      </article>
 
-        const authArea = document.getElementById('authArea');
-        const appArea = document.getElementById('appArea');
-        const loginForm = document.getElementById('loginForm');
-        const passwordInput = document.getElementById('passwordInput');
-        const errorMessage = document.getElementById('errorMessage');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const clockEl = document.getElementById('clock');
-        const botStatus = document.getElementById('botStatus');
-        const openTradesEl = document.getElementById('openTrades');
-        const dailyPnlEl = document.getElementById('dailyPnl');
-        const logList = document.getElementById('logList');
-        const pauseBtn = document.getElementById('pauseBtn');
-        const signalBtn = document.getElementById('signalBtn');
+      <article class="panel">
+        <h2 style="font-size:1rem;">Strateji Ayarları</h2>
+        <div class="settings">
+          <div class="inline"><span>Max Open Trades</span><strong id="maxOpen">3</strong></div>
+          <div class="inline"><span>Stoploss</span><strong>-3.0%</strong></div>
+          <div class="inline"><span>ROI Target</span><strong>+1.8%</strong></div>
+          <div class="inline"><span>Risk Modu</span><strong id="riskMode" class="warn">Normal</strong></div>
+        </div>
+        <p class="tiny" style="margin-top:14px; line-height:1.6;">
+          Not: Bu panel tamamen frontend demodur. Gerçek borsa işlemi yapmaz.
+        </p>
+      </article>
+    </section>
+  </main>
 
-        let botRunning = true;
-        let openTrades = 0;
-        let dailyPnl = 0;
+  <script>
+    const PASSWORD = 'asd1234';
+    const AUTH_KEY = 'furkan_trade_auth_v2';
 
-        function isAuthenticated() {
-            return sessionStorage.getItem(AUTH_KEY) === 'true';
-        }
+    const authScreen = document.getElementById('authScreen');
+    const appScreen = document.getElementById('appScreen');
+    const loginForm = document.getElementById('loginForm');
+    const passInput = document.getElementById('pass');
+    const authError = document.getElementById('authError');
+    const lockBtn = document.getElementById('lockBtn');
+    const statusValue = document.getElementById('statusValue');
+    const positionsValue = document.getElementById('positionsValue');
+    const pnlValue = document.getElementById('pnlValue');
+    const timeValue = document.getElementById('timeValue');
+    const logs = document.getElementById('logs');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const signalBtn = document.getElementById('signalBtn');
+    const riskBtn = document.getElementById('riskBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const maxOpenEl = document.getElementById('maxOpen');
+    const riskModeEl = document.getElementById('riskMode');
 
-        function setAuthenticated(value) {
-            sessionStorage.setItem(AUTH_KEY, value ? 'true' : 'false');
-        }
+    let running = true;
+    let openPositions = 0;
+    let pnl = 0;
+    const MAX_OPEN = 3;
 
-        function renderAuthState() {
-            const allowed = isAuthenticated();
-            authArea.classList.toggle('hidden', allowed);
-            appArea.classList.toggle('hidden', !allowed);
-            if (allowed) {
-                startRealtimeWidgets();
-            }
-        }
+    function authState() {
+      return sessionStorage.getItem(AUTH_KEY) === '1';
+    }
 
-        function updateClock() {
-            const now = new Date();
-            const h = String(now.getUTCHours()).padStart(2, '0');
-            const m = String(now.getUTCMinutes()).padStart(2, '0');
-            const s = String(now.getUTCSeconds()).padStart(2, '0');
-            clockEl.textContent = `${h}:${m}:${s}`;
-        }
+    function setAuth(state) {
+      sessionStorage.setItem(AUTH_KEY, state ? '1' : '0');
+    }
 
-        function addLog(message) {
-            const item = document.createElement('div');
-            item.className = 'log-item';
-            item.textContent = `[${new Date().toLocaleTimeString('tr-TR')}] ${message}`;
-            logList.prepend(item);
-            if (logList.childElementCount > 20) {
-                logList.removeChild(logList.lastElementChild);
-            }
-        }
+    function showApp(allowed) {
+      authScreen.classList.toggle('hidden', allowed);
+      appScreen.classList.toggle('hidden', !allowed);
+      if (allowed) bootOnce();
+    }
 
-        function generateSignal() {
-            if (!botRunning) {
-                addLog('Bot kapalı olduğu için sinyal işlenmedi.');
-                return;
-            }
-            const events = [
-                { text: 'BTC/USDT için long sinyali alındı.', pnl: 0.45, tradeDelta: 1 },
-                { text: 'ETH/USDT pozisyonunda ROI hedefi gerçekleşti.', pnl: 0.62, tradeDelta: -1 },
-                { text: 'SOL/USDT işlemi stoploss ile kapandı.', pnl: -0.38, tradeDelta: -1 },
-                { text: 'XRP/USDT için giriş filtreden geçti.', pnl: 0.21, tradeDelta: 1 }
-            ];
+    function nowUTC() {
+      const d = new Date();
+      return [d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds()]
+        .map(v => String(v).padStart(2, '0'))
+        .join(':');
+    }
 
-            const event = events[Math.floor(Math.random() * events.length)];
-            openTrades = Math.max(0, openTrades + event.tradeDelta);
-            dailyPnl = Number((dailyPnl + event.pnl).toFixed(2));
+    function updateClock() {
+      timeValue.textContent = nowUTC();
+    }
 
-            openTradesEl.textContent = String(openTrades);
-            dailyPnlEl.textContent = `${dailyPnl >= 0 ? '+' : ''}${dailyPnl.toFixed(2)}%`;
-            dailyPnlEl.classList.toggle('good', dailyPnl >= 0);
-            dailyPnlEl.classList.toggle('bad', dailyPnl < 0);
-            addLog(event.text);
-        }
+    function pushLog(text) {
+      const row = document.createElement('div');
+      row.className = 'log';
+      row.textContent = `[${new Date().toLocaleTimeString('tr-TR')}] ${text}`;
+      logs.prepend(row);
+      if (logs.childElementCount > 40) logs.lastChild.remove();
+    }
 
-        function startRealtimeWidgets() {
-            if (window.__furkanbotStarted) return;
-            window.__furkanbotStarted = true;
-            updateClock();
-            setInterval(updateClock, 1000);
-            setInterval(() => {
-                if (botRunning) generateSignal();
-            }, 8000);
-            addLog('Panel başlatıldı. Bot veri toplamaya başladı.');
-        }
+    function syncUI() {
+      positionsValue.textContent = String(openPositions);
+      pnlValue.textContent = `${pnl >= 0 ? '+' : ''}${pnl.toFixed(2)}%`;
+      pnlValue.classList.toggle('ok', pnl >= 0);
+      pnlValue.classList.toggle('bad', pnl < 0);
+      statusValue.textContent = running ? 'AKTİF' : 'DURAKLATILDI';
+      statusValue.classList.toggle('ok', running);
+      statusValue.classList.toggle('bad', !running);
+      toggleBtn.textContent = running ? 'Botu Durdur' : 'Botu Başlat';
+      maxOpenEl.textContent = String(MAX_OPEN);
+    }
 
-        loginForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            if (passwordInput.value === APP_PASSWORD) {
-                setAuthenticated(true);
-                passwordInput.value = '';
-                errorMessage.textContent = '';
-                renderAuthState();
-                addLog('Kimlik doğrulama başarılı.');
-            } else {
-                errorMessage.textContent = 'Şifre hatalı. Lütfen tekrar deneyin.';
-            }
-        });
+    function riskCheck() {
+      const stress = openPositions >= MAX_OPEN || pnl < -2;
+      riskModeEl.textContent = stress ? 'Koruma Modu' : 'Normal';
+      riskModeEl.className = stress ? 'bad' : 'warn';
+      pushLog(stress ? 'Risk kontrolü: Koruma modu aktif.' : 'Risk kontrolü: Normal.');
+    }
 
-        logoutBtn.addEventListener('click', () => {
-            setAuthenticated(false);
-            authArea.classList.remove('hidden');
-            appArea.classList.add('hidden');
-            errorMessage.textContent = '';
-            addLog('Oturum kapatıldı.');
-        });
+    function simulateEvent() {
+      if (!running) {
+        pushLog('Bot duraklatıldığı için event işlenmedi.');
+        return;
+      }
 
-        pauseBtn.addEventListener('click', () => {
-            botRunning = !botRunning;
-            botStatus.textContent = botRunning ? 'AKTİF' : 'DURAKLATILDI';
-            botStatus.classList.toggle('good', botRunning);
-            botStatus.classList.toggle('bad', !botRunning);
-            pauseBtn.textContent = botRunning ? 'Botu Durdur' : 'Botu Başlat';
-            addLog(botRunning ? 'Bot tekrar başlatıldı.' : 'Bot durduruldu.');
-        });
+      const events = [
+        { msg: 'BTC/USDT giriş sinyali onaylandı.', dp: 0.40, dc: 1 },
+        { msg: 'ETH/USDT ROI hedefiyle kapandı.', dp: 0.75, dc: -1 },
+        { msg: 'SOL/USDT stoploss tetiklendi.', dp: -0.60, dc: -1 },
+        { msg: 'XRP/USDT volatilite filtresi geçti.', dp: 0.22, dc: 1 },
+        { msg: 'ADA/USDT timeout nedeniyle iptal edildi.', dp: -0.12, dc: 0 }
+      ];
 
-        signalBtn.addEventListener('click', generateSignal);
+      const ev = events[Math.floor(Math.random() * events.length)];
+      openPositions = Math.max(0, Math.min(MAX_OPEN, openPositions + ev.dc));
+      pnl = +(pnl + ev.dp).toFixed(2);
+      pushLog(ev.msg);
+      syncUI();
+    }
 
-        renderAuthState();
-    </script>
+    function bootOnce() {
+      if (window.__furkanBooted) return;
+      window.__furkanBooted = true;
+      pushLog('Dashboard açıldı. Akış başlatıldı.');
+      updateClock();
+      syncUI();
+      setInterval(updateClock, 1000);
+      setInterval(() => { if (running) simulateEvent(); }, 7000);
+    }
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (passInput.value === PASSWORD) {
+        setAuth(true);
+        authError.textContent = '';
+        passInput.value = '';
+        showApp(true);
+        pushLog('Kimlik doğrulama başarılı.');
+      } else {
+        authError.textContent = 'Şifre yanlış. Lütfen tekrar deneyin.';
+      }
+    });
+
+    lockBtn.addEventListener('click', () => {
+      setAuth(false);
+      showApp(false);
+      authError.textContent = '';
+    });
+
+    toggleBtn.addEventListener('click', () => {
+      running = !running;
+      syncUI();
+      pushLog(running ? 'Bot tekrar başlatıldı.' : 'Bot manuel olarak durduruldu.');
+    });
+
+    signalBtn.addEventListener('click', simulateEvent);
+    riskBtn.addEventListener('click', riskCheck);
+    clearBtn.addEventListener('click', () => { logs.innerHTML = ''; pushLog('Log ekranı temizlendi.'); });
+
+    showApp(authState());
+  </script>
 </body>
 </html>
